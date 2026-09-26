@@ -1,0 +1,88 @@
+# =========================
+# Java / Maven
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+application-local.properties
+application-dev.properties
+application-prod.properties
+
+# =========================
+# Credentials / Keys
+# =========================
+credentials.json
+secrets.json
+service-account.json
+aws-credentials
+*.pem
+*.key
+*.p12
+*.jks
+*.crt
+
+.aws/
+
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+dist/
+build/
+.next/
+out/
+
+# =========================
+# IDE
+# =========================
+.idea/
+*.iml
+
+.vscode/*
+!.vscode/settings.json
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# =========================
+# Test / Coverage
+# =========================
+coverage/
+
+# =========================
+# Local test files
+# =========================
+s3-test.txt

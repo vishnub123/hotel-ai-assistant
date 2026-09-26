@@ -1,0 +1,12 @@
+{
+  "info": {"name":"Hotel AI Assistant Backend","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "variable":[{"key":"baseUrl","value":"http://localhost:8080"},{"key":"token","value":""},{"key":"bookingNumber","value":""}],
+  "item":[
+    {"name":"Register","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Vishnu\",\n  \"email\": \"vishnu@example.com\",\n  \"password\": \"Password@123\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/register","host":["{{baseUrl}}"],"path":["api","auth","register"]}}},
+    {"name":"Login","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"email\": \"guest@hotel.local\",\n  \"password\": \"Guest@123\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/login","host":["{{baseUrl}}"],"path":["api","auth","login"]}}},
+    {"name":"List Rooms","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/rooms","host":["{{baseUrl}}",""],"path":["api","rooms"]}}},
+    {"name":"Create Booking","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"roomId\": 1,\n  \"checkIn\": \"2026-10-10\",\n  \"checkOut\": \"2026-10-12\"\n}"},"url":{"raw":"{{baseUrl}}/api/bookings","host":["{{baseUrl}}"],"path":["api","bookings"]}}},
+    {"name":"My Bookings","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/bookings/mine","host":["{{baseUrl}}"],"path":["api","bookings","mine"]}}},
+    {"name":"AI Chat","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"message\": \"Show my bookings\"\n}"},"url":{"raw":"{{baseUrl}}/api/chat","host":["{{baseUrl}}"],"path":["api","chat"]}}}
+  ]
+}

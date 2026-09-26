@@ -1,0 +1,3 @@
+package com.vishnu.hotelassistant.controller;
+import com.vishnu.hotelassistant.entity.Room; import com.vishnu.hotelassistant.service.RoomService; import org.springframework.security.access.prepost.PreAuthorize; import org.springframework.web.bind.annotation.*; import java.util.List;
+@RestController @RequestMapping("/api/rooms") public class RoomController {private final RoomService service; public RoomController(RoomService s){service=s;} @GetMapping public List<Room> all(){return service.all();} @GetMapping("/available") public List<Room> available(){return service.available();} @PostMapping @PreAuthorize("hasRole('ADMIN')") public Room create(@RequestBody Room r){return service.create(r);}}

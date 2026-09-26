@@ -1,0 +1,3 @@
+package com.vishnu.hotelassistant.controller;
+import com.vishnu.hotelassistant.ai.HotelAssistant; import com.vishnu.hotelassistant.dto.*; import jakarta.validation.Valid; import org.springframework.web.bind.annotation.*; import java.security.Principal;
+@RestController @RequestMapping("/api/chat") public class ChatController {private final HotelAssistant assistant; public ChatController(HotelAssistant a){assistant=a;} @PostMapping public ChatResponse chat(Principal p,@Valid @RequestBody ChatRequest r){String prompt="Authenticated guest email: "+p.getName()+". User request: "+r.message(); return new ChatResponse(assistant.chat(p.getName(),prompt));}}
