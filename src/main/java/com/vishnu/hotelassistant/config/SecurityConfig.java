@@ -1,5 +1,6 @@
 package com.vishnu.hotelassistant.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import com.vishnu.hotelassistant.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,8 @@ import java.util.List;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+        @Value("${FRONTEND_URL:http://localhost:5173}")
+        private String frontendUrl;
 
         @Bean
         PasswordEncoder passwordEncoder() {
@@ -32,7 +35,7 @@ public class SecurityConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
 
                 configuration.setAllowedOrigins(List.of(
-                                "http://localhost:5173"));
+                                frontendUrl));
 
                 configuration.setAllowedMethods(List.of(
                                 "GET",
