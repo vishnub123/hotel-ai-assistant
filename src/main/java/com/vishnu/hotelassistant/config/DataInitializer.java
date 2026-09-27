@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class DataInitializer {
 
-    @Bean
+//     @Bean
     CommandLineRunner seed(
             AppUserRepository users,
             RoomRepository rooms,
