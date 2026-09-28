@@ -2530,9 +2530,7 @@ async function sendAiMessage(event) {
 
 function appendAiBubble(text, type) {
   const messages =
-    document.querySelector(
-      '#aiChatMessages'
-    )
+    document.querySelector('#aiChatMessages')
 
   if (!messages) return
 
@@ -2542,12 +2540,190 @@ function appendAiBubble(text, type) {
   bubble.className =
     `ai-bubble ${type}`
 
-  bubble.textContent = text
+  if (type.includes('assistant')) {
+    bubble.innerHTML =
+      formatAiResponse(String(text))
+  } else {
+    bubble.textContent = text
+  }
 
   messages.appendChild(bubble)
 
   messages.scrollTop =
     messages.scrollHeight
+}
+
+
+/* =========================================================
+   AI RESPONSE FORMATTER
+========================================================= */
+
+function formatAiResponse(text) {
+
+  let safeText = escapeHtml(String(text))
+
+  /*
+   * Detect booking responses
+   */
+  const hasBooking =
+    /Booking\s+[A-Z0-9-]+/i.test(safeText)
+
+  if (hasBooking) {
+
+    /*
+     * Booking number
+     */
+    safeText = safeText.replace(
+      /\*\*Booking\s+([A-Z0-9-]+)\*\*/gi,
+      `
+      <div class="ai-booking-card">
+
+        <div class="ai-booking-top">
+          <div>
+            <span class="ai-booking-label">
+              BOOKING
+            </span>
+
+            <strong class="ai-booking-number">
+              $1
+            </strong>
+          </div>
+
+          <span class="ai-booking-icon">
+            ✦
+          </span>
+        </div>
+
+        <div class="ai-booking-details">
+      `
+    )
+
+    /*
+     * Room
+     */
+    safeText = safeText.replace(
+      /-?\s*\*\*Room:\*\*\s*(.*?)(?=<br>|$)/gi,
+      `
+      <div class="ai-detail-row">
+        <span class="ai-detail-icon">🛏</span>
+        <div>
+          <small>ROOM</small>
+          <strong>$1</strong>
+        </div>
+      </div>
+      `
+    )
+
+    /*
+     * Check-in
+     */
+    safeText = safeText.replace(
+      /-?\s*\*\*Check-in:\*\*\s*(.*?)(?=<br>|$)/gi,
+      `
+      <div class="ai-detail-row">
+        <span class="ai-detail-icon">→</span>
+        <div>
+          <small>CHECK-IN</small>
+          <strong>$1</strong>
+        </div>
+      </div>
+      `
+    )
+
+    /*
+     * Check-out
+     */
+    safeText = safeText.replace(
+      /-?\s*\*\*Check-out:\*\*\s*(.*?)(?=<br>|$)/gi,
+      `
+      <div class="ai-detail-row">
+        <span class="ai-detail-icon">←</span>
+        <div>
+          <small>CHECK-OUT</small>
+          <strong>$1</strong>
+        </div>
+      </div>
+      `
+    )
+
+    /*
+     * Status
+     */
+    safeText = safeText.replace(
+      /-?\s*\*\*Status:\*\*\s*(CONFIRMED|CANCELLED|PENDING)/gi,
+      `
+      <div class="ai-detail-row">
+        <span class="ai-detail-icon">✓</span>
+        <div>
+          <small>STATUS</small>
+          <strong class="ai-status-confirmed">$1</strong>
+        </div>
+      </div>
+      `
+    )
+
+    /*
+     * Total
+     */
+    safeText = safeText.replace(
+      /-?\s*\*\*Total:\*\*\s*(.*?)(?=<br>|$)/gi,
+      `
+      <div class="ai-detail-row ai-total-row">
+        <span class="ai-detail-icon">$</span>
+        <div>
+          <small>TOTAL</small>
+          <strong>$1</strong>
+        </div>
+      </div>
+      `
+    )
+
+    /*
+     * Close booking details
+     */
+    safeText = safeText.replace(
+      /(<div class="ai-total-row">[\s\S]*?<\/div>\s*<\/div>)/,
+      '$1</div>'
+    )
+
+  }
+
+  /*
+   * Normal bold Markdown
+   */
+  safeText = safeText.replace(
+    /\*\*(.*?)\*\*/g,
+    '<strong>$1</strong>'
+  )
+
+  /*
+   * Bullet points that remain
+   */
+  safeText = safeText.replace(
+    /^\s*[-•]\s+(.*)$/gm,
+    '<li>$1</li>'
+  )
+
+  safeText = safeText.replace(
+    /(<li>.*?<\/li>\s*)+/gs,
+    match =>
+      `<ul class="ai-response-list">${match}</ul>`
+  )
+
+  /*
+   * Paragraph spacing
+   */
+  safeText = safeText.replace(
+    /\n{2,}/g,
+    '<div class="ai-response-space"></div>'
+  )
+
+  safeText = safeText.replace(
+    /\n/g,
+    '<br>'
+  )
+
+  return safeText
 }
 
 /* =========================================================
